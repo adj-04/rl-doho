@@ -1,0 +1,8 @@
+__pycache__/
+.ipynb_checkpoints/
+*.tmp
+*.xlsx
+**/data/
+**/cache_*.pkl
+**/fitness_cache_*.pkl
+**/test_cache_*.pkl
