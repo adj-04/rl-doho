@@ -28,6 +28,7 @@ Preprint: [`paper/main.pdf`](paper/main.pdf)
 | 7 | `07_v2_gene_expression` | Final version on gene data, sparse start; ablation, 3x budget |
 | 8 | `08_v3_gene_and_tabular_extensions` | Five medical tabular datasets, GA+SI / HO+SI, Q-learning, kappa sweep, cost |
 | 9 | `09_v3_rheumatic_extensions` | Same extensions on rheumatic data, plus repeated train/test splits |
+| 10 | `10_v4_svm_tabular` | Tabular benchmark repeated with an SVM classifier (second-classifier check) |
 
 ## Data
 - Rheumatic and autoimmune disease dataset (CC BY 4.0): Mahdi, Jahani & Abd, *Data in Brief* 60 (2025) 111623, doi:10.1016/j.dib.2025.111623. Put the `.xlsx` in your Google Drive root before running Notebooks 1, 4, 6 and 9.
