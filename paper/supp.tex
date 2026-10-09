@@ -1,0 +1,140 @@
+\documentclass[journal]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,calc}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+\title{Supplementary Material for ``Stagnation-Triggered Interventions for Wrapper Feature Selection: RL-DOHO and a Controlled Test of Learned Operator Selection''}
+\author{Preetha~Evangeline~D, Prasenjit~Choudhury, Shreyansh~Dabgar, and Aditya~Jha}
+\maketitle
+
+This supplement gives the details of three parts of the study that are summarized in the main text. Code, notebooks and per-run results are at \url{https://github.com/adj-04/rl-doho}.
+\section{Sensitivity to the operator implementation}
+An earlier version of this study used simplified three-phase versions of the DO and HO update rules, a dense start on all datasets, the old reward and a budget defined in iterations. Table~\ref{tab:sens} and Fig.~\ref{fig:sens} compare the two versions on the six datasets of the main study, with the same splits and seeds.
+\begin{itemize}
+\item \textbf{Simplified rules:} RL-DOHO was ahead of DO in 41 of the 60 runs and behind in 13. It was level with HO (30 against 29) and behind the GA (20 against 39).
+\item \textbf{Published rules:} the corresponding figures are 54 against 3, 28 against 29 and 18 against 40.
+\item \textbf{The conclusions about the DO--HO family and the GA are unchanged:} clearly better than DO, level with HO, behind the GA. With the published rules the gap to DO widens, partly because the published DO stalls on the clinical problem.
+\item \textbf{The comparison with binary PSO and GWO reversed.} Under v1, RL-DOHO was behind both (25 against 34 and 22 against 38 runs); under v2 it was ahead (50 against 8 and 47 against 13). This change most likely comes from the sparse start, which RL-DOHO keeps and the two baselines drift away from.
+\item \textbf{Gene data:} the new configuration reduced the subsets of the DO--HO family from about 2,100 genes to 99--157 and lowered their fitness substantially. Their mean test accuracy fell by 1.2--3.2 points, while that of the GA, BPSO and BGWO changed by about 0.2 points or less.
+\item \textbf{GA, BPSO and BGWO} also improved in fitness under the sparse start.
+\end{itemize}
+
+\begin{table*}[t]
+\centering
+\caption{Sensitivity analysis: mean fitness and test accuracy (\%) of the wrapper methods under the earlier configuration (v1: simplified DO/HO rules, dense start, old reward) and the final one (v2), and mean number of selected genes on gene data. On the clinical data the GA, BPSO and BGWO runs are shared by both versions.}
+\label{tab:sens}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccccccccc@{}}
+\toprule
+& \multicolumn{4}{c}{Rheumatic} & \multicolumn{4}{c}{Gene expression (5 datasets)} & \multicolumn{2}{c}{Genes selected} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}\cmidrule(l){10-11}
+Method & Fit.\ v1 & Fit.\ v2 & Acc.\ v1 & Acc.\ v2 & Fit.\ v1 & Fit.\ v2 & Acc.\ v1 & Acc.\ v2 & v1 & v2 \\
+\midrule
+RL-DOHO & 0.1845 & 0.1832 & 84.3 & 84.3 & 0.1396 & 0.0786 & 84.4 & 83.2 & 2098 & 157 \\
+DO & 0.1871 & 0.2280 & 84.1 & 80.0 & 0.1443 & 0.1113 & 83.8 & 81.2 & 2114 & 124 \\
+HO & 0.1880 & 0.1838 & 83.8 & 84.3 & 0.1382 & 0.0816 & 85.0 & 81.8 & 2110 & 99 \\
+DOHO & 0.1882 & 0.1857 & 84.0 & 84.5 & 0.1403 & 0.0966 & 84.7 & 82.0 & 2114 & 115 \\
+\midrule
+GA & 0.1821 & (same) & 84.4 & (same) & 0.1432 & 0.0616 & 83.5 & 83.5 & 2006 & 121 \\
+BPSO & 0.1828 & (same) & 84.5 & (same) & 0.1344 & 0.1192 & 83.8 & 83.6 & 2122 & 670 \\
+BGWO & 0.1894 & (same) & 83.8 & (same) & 0.1362 & 0.1014 & 83.8 & 83.9 & 2031 & 772 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/sensitivity.pdf}
+\caption{Mean fitness of the DO--HO family under the earlier configuration (hollow) and the final one (filled), per dataset.}
+\label{fig:sens}
+\end{figure*}
+
+
+\section{Cost}
+Every method received the same budget of fitness evaluations, but the budget also counts repeated subsets, and those are served from the cache. The real cost of a run is therefore set by the number of distinct subsets it evaluates (Table~\ref{tab:cost}).
+\begin{itemize}
+\item On the new clinical splits, RL-DOHO evaluated 83 distinct subsets per run, against 131 for HO, 132 for the GA and 245 for binary PSO. At about 3.6~s per new subset on the free Colab runtime we used, that is roughly 5, 8, 8 and 15 minutes per run from an empty cache.
+\item On the tabular data the pattern was the same (381 against 596, 633 and 1,018 subsets).
+\item Fewer distinct subsets also means less exploration. DO evaluated the fewest and was the weakest method, and binary GWO, which also evaluated few, ranked well on the tabular data but poorly on the clinical splits. The count is a cost advantage, not a quality signal.
+\item The algorithms' own overhead was below 1.5~ms per evaluation for every method, even at $D=7{,}129$. That is negligible next to a fitness evaluation (about 20~ms for the tabular KNN and 3.6~s for the clinical models).
+\item The per-evaluation cost on the clinical data was recorded on one split only, on one shared cloud runtime.
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Cost: mean number of distinct subsets evaluated per run on the two new clinical splits (budget 252) and the tabular datasets (budget 1,020), and algorithm overhead in milliseconds per fitness evaluation on a near-free fitness function, by number of features $D$.}
+\label{tab:cost}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+& \multicolumn{2}{c}{Distinct subsets} & \multicolumn{4}{c}{Overhead (ms/evaluation)} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-7}
+Method & Clinical & Tabular & $D=14$ & 44 & 2,000 & 7,129 \\
+\midrule
+RL-DOHO & 83 & 381 & 0.08 & 0.06 & 0.26 & 0.77 \\
+DO & 13 & 24 & 0.03 & 0.03 & 0.31 & 1.41 \\
+HO & 131 & 596 & 0.06 & 0.06 & 0.12 & 0.26 \\
+DOHO & 77 & 290 & 0.05 & 0.04 & 0.21 & 0.62 \\
+\midrule
+GA & 132 & 633 & 0.05 & 0.04 & 0.09 & 0.19 \\
+BPSO & 245 & 1018 & 0.02 & 0.02 & 0.09 & 0.27 \\
+BGWO & 54 & 237 & 0.08 & 0.08 & 0.20 & 0.48 \\
+GA+SI & 171 & 771 & 0.08 & 0.07 & 0.12 & 0.24 \\
+HO+SI & 140 & 656 & 0.07 & 0.07 & 0.14 & 0.27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Controller extensions: protocol and the warm-start result}
+The main text finds that a learned controller (UCB1 or tabular Q-learning) does no better than random choice of the intervention, and gives two likely causes: the controller gets few decisions per run, and the moves are complementary rather than ranked. We designed one experiment for each cause and one for the controller's information. All of them use the same code as the main study, and the protocol below was fixed before any of them was run. The notebook (Notebook 11 in the repository) runs it as specified.
+
+\emph{The three extensions.}
+\begin{itemize}
+\item \textbf{Warm start (more decisions).} Before each evaluated run, two warm-up runs of 1,020 evaluations on the same training split (optimizer seeds 1000+$s$ and 2000+$s$) are chained, and the evaluated run starts from the controller statistics they produce, halved and capped at ten pulls per move. Only the controller's statistics carry over; no subsets, populations or tabu entries do. The warm-up evaluations are reported as extra cost.
+\item \textbf{A move pool that differs in kind (more to learn).} Seven moves: flip 1--3 features of the best subset (the original PERTURB), flip 4 to $\min(20, D/2)$ features, remove 1--3 selected features, swap 1--2 selected features for unselected ones, restart, one DO iteration and one HO iteration.
+\item \textbf{Context.} A disjoint LinUCB bandit (L. Li et al., WWW 2010; $\alpha=1$, ridge 1) sees the share of the budget used, how long the search has been stuck, population diversity, the size of the best subset and whether the last move improved it.
+\end{itemize}
+
+\emph{Design.} Nine variants are run at three times the standard budget (3,060 evaluations, population 20) on the ten KNN datasets with ten seeds: random choice, UCB1 and LinUCB on the original four moves; random choice, UCB1 and LinUCB on the seven moves; and warm-started UCB1 (four and seven moves) and warm-started LinUCB (seven moves). At this budget the controller makes about 80--170 decisions per run, against about 30 at the standard budget.
+
+\emph{Verification.} With the original four moves, no warm start and UCB1 or random choice, the extended code reproduces the main study's runs exactly: the same subsets are evaluated in the same order and the same result is returned. We checked this on a synthetic fitness and on real data before fixing the protocol, so the four-move variants double as a check against the main study's three-times-budget runs.
+
+\emph{Hypotheses.} Pooled two-sided sign tests on fitness over 100 paired runs, Holm-corrected over the four:
+\begin{itemize}
+\item \textbf{H10a:} warm-started UCB1 against random choice, four moves.
+\item \textbf{H10b:} UCB1 against random choice, seven moves.
+\item \textbf{H10c:} LinUCB against random choice, seven moves.
+\item \textbf{H10d:} warm-started LinUCB against random choice, seven moves.
+\end{itemize}
+
+\emph{Success criterion.} The controller is judged to earn its place only if at least one of H10a--d favours the learner at Holm $p<0.05$ and that variant is not significantly worse than the current RL-DOHO. Two diagnostics accompany the tests. The first is a Kruskal--Wallis test of whether the moves' rewards under random choice differ. The second is the correlation between how often a learner picks each move and that move's mean reward. Together they show whether there is anything to learn and whether it was learned. All outcomes are reported whichever way they fall.
+
+\emph{What was run.} Of the four, only H10a (the warm start) was run, because it addresses the cause the main study identifies first (too few decisions per run). It used three variants: random choice, cold-started UCB1 (the current RL-DOHO) and warm-started UCB1, all with the four original moves, on the ten KNN datasets with ten seeds. H10b--d were not run and are reported as not run; with a single test, no multiplicity correction applies.
+
+\emph{Verification.} The two four-move baselines reproduced the main study's three-times-budget runs exactly (200 of 200 runs identical).
+
+\emph{Result.} H10a was not supported. The warm-started bandit reached lower fitness than random choice in 46 runs and higher in 53 ($p=0.55$; tabular 26 against 23, gene 20 against 30). Against the cold-started bandit it was ahead in 39 and behind in 61 (unadjusted $p=0.035$, Holm $p=0.070$ over the two comparisons with the current method), so the success criterion was not met. Test accuracy did not differ (42 against 42, 16 ties). The warm-up runs raised the number of distinct subsets evaluated per run by about 70\%. Each run made about 80--115 decisions.
+
+\emph{Diagnostics.} Under random choice the four moves' rewards differed on every dataset (Kruskal--Wallis $p<0.001$). The cold-started bandit's choice frequencies matched the ranking of the moves' mean rewards on all ten datasets (Spearman 1.0), as did the warm-started bandit's (mean 0.96). However, the move with the highest mean reward, DO (0.10--0.13), improved the best subset in at most 11\% of uses, whereas PERTURB and HO did so in up to 28\% and 22\%. The reward gaps were also small relative to UCB1's exploration bonus, so the bandit's choices stayed close to uniform (DO 32\%, PERTURB 25\%, HO 22\%, RESTART 20\%). The bandit learned its reward; the reward did not track improvement of the best subset closely enough for that learning to pay off.
+
+\end{document}
