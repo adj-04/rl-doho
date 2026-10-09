@@ -1,46 +1,97 @@
-<div align="center">
+# RL-DOHO: stagnation-triggered interventions for wrapper feature selection
 
-<table border="0">
-<tr>
-<td width="46%" align="center" valign="middle">
+Code, notebooks, per-run results and paper for:
 
-<img src="./assets/matrix_reveal.gif" width="560" alt="hand-drawn portrait revealed through digital code" />
+> **Stagnation-Triggered Interventions for Wrapper Feature Selection: RL-DOHO and a Controlled Test of Learned Operator Selection**
+> Preetha Evangeline D, Prasenjit Choudhury, Shreyansh Dabgar, Aditya Jha. School of Computer Science and Engineering, VIT Chennai.
+> Final-year project (BCSE497J). Preprint: [`paper/main.pdf`](paper/main.pdf). Supplement: [`paper/supplementary.pdf`](paper/supplementary.pdf).
 
-</td>
-<td width="54%" valign="middle">
+## What this is
 
-<h1>Aditya Jha</h1>
+Population-based wrapper feature selection tends to stop improving well before its evaluation budget runs out. RL-DOHO addresses this with a **stagnation-triggered intervention layer**:
 
-<p><b>Computer Science @ VIT Chennai</b></p>
+1. Run the published **Dandelion Optimizer (DO)** while the best subset keeps improving.
+2. After **κ = 2** iterations without improvement, a **UCB1 bandit** chooses one intervention:
+   - **PERTURB**: flip 1–3 features of the best subset (tabu-guarded).
+   - **RESTART**: redraw the worse half of the population (tabu-guarded).
+   - One published **DO** iteration.
+   - One published **Hippopotamus Optimization (HO)** iteration.
+3. The bandit's reward is the fitness gain per evaluation spent. A sparse initial population is used when D > 100.
 
-<p>
-I build across computational biology, applied ML, security, and agentic AI — with a side obsession for art, visual design, and making things unnecessarily polished.
-</p>
+Fitness is `0.99 × (1 − CV accuracy) + 0.01 × |S|/D`. Every method gets the same budget of **fitness evaluations**.
 
-<p>
-<a href="https://linkedin.com/in/aditya-jha-b35b1041b">LinkedIn</a> ·
-<a href="mailto:jha2005aditya@gmail.com">Email</a> ·
-Chennai, India
-</p>
+## Main findings
 
-<hr>
+The study covers 11 datasets and 110 paired runs per comparison. Ten hypotheses were fixed before the runs that test them.
 
-<h3>⚙️ Stack</h3>
+| Finding | Result |
+|---|---|
+| RL-DOHO vs published DO | better in 103 runs, worse in 4 |
+| RL-DOHO vs published HO | level (58 vs 49, not significant) |
+| GA vs RL-DOHO | GA better in 85 runs, worse in 22 |
+| Same intervention layer added to HO | better in 71 runs, worse in 29 (p < 0.001) |
+| Same layer added to a GA | no change (45 vs 49) |
+| UCB1 / Q-learning / random choice of intervention | level at 1× and 3× budget |
+| Warm-started UCB1 vs random (H10a) | level (46 vs 53) |
+| Trigger κ | κ ≤ 2 better than waiting (Friedman p < 0.001) |
+| Test accuracy | no difference significant after correction |
+| SVM instead of 5-NN (tabular) | method ranking barely changes (Spearman 0.99) |
 
-<p><b>Languages</b><br>
-Python · C · Java · SQL · R · HTML/CSS</p>
+**What this means:** the gain comes from intervening when the search stalls, not from how the intervention is chosen.
 
-<p><b>ML / Data</b><br>
-scikit-learn · XGBoost · SHAP · NumPy · pandas · Qiskit</p>
+**Why the learned choice does not help:** the bandit learns its reward exactly. Its choice frequencies match the ranking of the moves' rewards on every dataset. But the reward favours DO steps, which rarely improve the best subset. And because the reward gaps are small next to UCB1's exploration bonus, its choices stay close to uniform. See Section VI-C and Supplementary S3 of the paper.
 
-<p><b>AI / Systems</b><br>
-LangGraph · LangChain · Groq · RAG · Streamlit</p>
+## Datasets
 
-<p><b>Bio / Tools</b><br>
-netZoo · UniProt · AlphaFold · 3Dmol.js · AWS · Git · Linux · ESP32</p>
+| Group | Datasets | Features | Classifier in the fitness |
+|---|---|---|---|
+| Clinical | Rheumatic and autoimmune disease, 12,085 patients, 7 classes (Mahdi et al., 2025) | 14 | XGBoost + HistGradientBoosting, SMOTE inside 3-fold CV |
+| Gene expression | colon, ALL/AML, lung, GLIOMA (scikit-feature), GSE93272 (GEO) | 2,000–7,129 | 5-NN |
+| Medical tabular | WDBC, Hepatitis, Dermatology, SPECTF, Backache (PMLB) | 19–44 | 5-NN, and an SVM in Notebook 10 |
 
-</td>
-</tr>
-</table>
+Raw data files are not stored here (see `.gitignore`). The notebooks download them from the original sources or read them from your Google Drive.
 
-</div>
+## Notebooks
+
+| # | Notebook | What it does |
+|---|---|---|
+| 01 | `01_rheumatic_main.ipynb` | First version on the rheumatic data |
+| 02 | `02_gene_expression.ipynb` | First version on the gene-expression data |
+| 03 | `03_gse93272_feature_sweep.ipynb` | Probe-filter sweep for GSE93272 |
+| 04 | `04_rheumatic_baselines.ipynb` | GA, BPSO, BGWO and filter baselines (rheumatic) |
+| 05 | `05_gene_baselines.ipynb` | Same baselines on gene data |
+| 06 | `06_v2_rheumatic.ipynb` | v2: published DO/HO rules, gain reward, equal budgets (rheumatic) |
+| 07 | `07_v2_gene_expression.ipynb` | v2 on gene data, with the sparse start |
+| 08 | `08_v3_gene_and_tabular_extensions.ipynb` | Tabular datasets, GA+SI / HO+SI, Q-learning, κ sweep, 3× budget, cost |
+| 09 | `09_v3_rheumatic_extensions.ipynb` | Extensions on the rheumatic data and two extra train/test splits |
+| 10 | `10_v4_svm_tabular.ipynb` | Tabular benchmark repeated with an SVM (H9) |
+| 11 | `11_v5_controller_warm_start.ipynb` | Warm-started controller vs random choice (H10a), with reward diagnostics |
+
+Notebook 11 also contains a 7-move pool (with drop and swap moves) and a LinUCB contextual bandit. They are fixed in advance as H10b–d but have not been run; set `ONLY = None` to run them.
+
+## Running the notebooks
+
+- They are written for **Google Colab** with Google Drive mounted. Results go to `MyDrive/rl_doho_results_*` in Drive; copies are in `results/` here.
+- Every run is saved as soon as it finishes, so rerunning a cell resumes where it stopped.
+- Set `FAST = True` in the config cell for a quick check that a notebook runs.
+- Later notebooks reuse the fitness caches of earlier ones. The fitness is deterministic, so cached and fresh evaluations are identical.
+- Rough runtimes on free Colab:
+  - Notebook 10: 1–1.5 h.
+  - Notebook 11 (H10a only): 1–1.5 h.
+  - Notebook 9: several hours, because each clinical evaluation takes about 3.6 s.
+
+## Repository layout
+
+```
+notebooks/   the 11 notebooks, with outputs
+paper/       main.pdf, supplementary.pdf, LaTeX sources (main.tex, supp.tex, refs.tex), figs/, tables/
+results/     per-run results (pickles and CSVs), one folder per version (v1_paper_bundle ... v5_rl)
+```
+
+## Citation
+
+```
+P. Evangeline D, P. Choudhury, S. Dabgar, A. Jha, "Stagnation-Triggered Interventions for Wrapper
+Feature Selection: RL-DOHO and a Controlled Test of Learned Operator Selection," preprint, 2026.
+https://github.com/adj-04/rl-doho
+```
