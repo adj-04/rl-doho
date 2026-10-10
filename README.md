@@ -33,13 +33,14 @@ The study covers 11 datasets and 110 paired runs per comparison. Ten hypotheses 
 | Same layer added to a GA | no change (45 vs 49) |
 | UCB1 / Q-learning / random choice of intervention | level at 1× and 3× budget |
 | Warm-started UCB1 vs random (H10a) | level (46 vs 53) |
+| UCB1 with best-subset reward vs random (H11a/b) | level (50 vs 48; 55 vs 42) |
 | Trigger κ | κ ≤ 2 better than waiting (Friedman p < 0.001) |
 | Test accuracy | no difference significant after correction |
 | SVM instead of 5-NN (tabular) | method ranking barely changes (Spearman 0.99) |
 
 **What this means:** the gain comes from intervening when the search stalls, not from how the intervention is chosen.
 
-**Why the learned choice does not help:** the bandit learns its reward exactly. Its choice frequencies match the ranking of the moves' rewards on every dataset. But the reward favours DO steps, which rarely improve the best subset. And because the reward gaps are small next to UCB1's exploration bonus, its choices stay close to uniform. See Section VI-C and Supplementary S3 of the paper.
+**Why the learned choice does not help:** with the original reward the bandit learns that reward exactly, but it favours DO steps that rarely improve the best subset. With a reward aimed at the best subset (Notebook 12) it learns to favour the right moves, yet still does not beat random choice: even the best move improves the best subset in at most 28% of uses. See Section VI-C and Supplementary S3 and S5 of the paper.
 
 ## Datasets
 
@@ -66,6 +67,7 @@ Raw data files are not stored here (see `.gitignore`). The notebooks download th
 | 09 | `09_v3_rheumatic_extensions.ipynb` | Extensions on the rheumatic data and two extra train/test splits |
 | 10 | `10_v4_svm_tabular.ipynb` | Tabular benchmark repeated with an SVM (H9) |
 | 11 | `11_v5_controller_warm_start.ipynb` | Warm-started controller vs random choice (H10a), with reward diagnostics |
+| 12 | `12_v6_best_gain_reward.ipynb` | Reward credited only for improving the best subset, with c = 1 and c = 0.2 (H11) |
 
 Notebook 11 also contains a 7-move pool (with drop and swap moves) and a LinUCB contextual bandit. They are fixed in advance as H10b–d but have not been run; set `ONLY = None` to run them.
 
@@ -83,7 +85,7 @@ Notebook 11 also contains a 7-move pool (with drop and swap moves) and a LinUCB 
 ## Repository layout
 
 ```
-notebooks/   the 11 notebooks, with outputs
+notebooks/   the 12 notebooks, with outputs
 paper/       main.pdf, supplementary.pdf, LaTeX sources (main.tex, supp.tex, refs.tex), figs/, tables/
 results/     per-run results (pickles and CSVs), one folder per version (v1_paper_bundle ... v5_rl)
 ```
