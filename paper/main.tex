@@ -32,7 +32,7 @@ Code, notebooks and per-run results: \url{https://github.com/adj-04/rl-doho}.}}
 \maketitle
 
 \begin{abstract}
-Population-based wrapper feature selection often stops improving long before its evaluation budget is spent. We study a simple remedy: a stagnation-triggered intervention layer that, after a few iterations without progress, applies one of a small set of moves, namely a tabu-guarded bit-flip search around the best subset, a partial restart, or an iteration of a second optimizer. We instantiate it as RL-DOHO, a hybrid of the Dandelion Optimizer (DO) and Hippopotamus Optimization (HO) in which a UCB1 bandit chooses the move. On eleven clinical, gene-expression and medical tabular datasets, with equal evaluation budgets, ten seeds and hypotheses fixed in advance, RL-DOHO reached lower fitness than the published DO in 103 of 110 paired runs (4 losses) and was level with HO (58 against 49), while a genetic algorithm (GA) did better more often (85 against 22). Added to HO, the same layer improved it in 71 runs against 29 ($p<0.001$); added to the GA, it changed nothing. Learned move selection added nothing: UCB1, tabular Q-learning and random choice were level, and neither a warm start nor a reward aimed at the best subset changed that, although with that reward the bandit learned to favour the moves that improved it most often. Intervening early was better than waiting, and on low-dimensional data the bit-flip search alone was the strongest move. The tabular results replicated with a second classifier, and no test-accuracy difference survived correction. The contribution is therefore the intervention layer, together with a controlled negative result on learned operator selection.
+Population-based wrapper feature selection often stops improving well before its budget runs out. We study a simple remedy: a stagnation-triggered intervention layer that, after a few stalled iterations, applies one of a small set of moves, namely a tabu-guarded bit-flip search around the best subset, a partial restart or a second optimizer's iteration. We instantiate it as RL-DOHO, a hybrid of the Dandelion Optimizer (DO) and Hippopotamus Optimization (HO) in which a UCB1 bandit chooses the move. On eleven clinical, gene-expression and medical tabular datasets, with equal evaluation budgets, ten seeds and hypotheses fixed in advance, RL-DOHO reached lower fitness than the published DO in 103 of 110 paired runs (4 losses), and stayed ahead when DO was given larger steps or a sigmoid encoding. It was level with HO (58 against 49), while a genetic algorithm (GA) did better more often (85 against 22). Added to HO, the same layer improved it in 71 runs against 29 ($p<0.001$); added to the GA, it changed nothing. Learned move selection added nothing: UCB1, tabular Q-learning and random choice were level, and neither a warm start nor a reward aimed at the best subset changed that, even though the bandit then learned to favour the most successful moves. Early intervention beat waiting, and on low-dimensional data the bit-flip search alone was the strongest move. The tabular results replicated with a second classifier; no test-accuracy difference survived correction. The contribution is the intervention layer and a controlled negative result on learned operator selection.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -56,7 +56,7 @@ Our contributions are as follows:
 \item A controlled test of learned operator selection. UCB1, tabular Q-learning, a warm-started UCB1 and a UCB1 with a reward aimed at the best subset were compared with random choice, and none helped. Diagnostics show that the bandit does learn to favour the better moves once its reward targets them, but their success rates are too low for that preference to pay off.
 \end{itemize}
 
-In brief, the layer is what helps: RL-DOHO is better than DO (a weak baseline under binary encoding, Section~\ref{sec:discussion}) and level with HO, the layer also improves HO, and a random choice of move works as well as a learned one. A GA reached lower fitness more often, and no method was significantly better on held-out data. Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the method, Section~\ref{sec:setup} the protocol, Section~\ref{sec:results} the results and Section~\ref{sec:discussion} their interpretation and limits.
+In brief, the layer is what helps: RL-DOHO is better than DO, also when DO is given larger steps or a sigmoid encoding, and level with HO, the layer also improves HO, and a random choice of move works as well as a learned one. A GA reached lower fitness more often, and no method was significantly better on held-out data. Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the method, Section~\ref{sec:setup} the protocol, Section~\ref{sec:results} the results and Section~\ref{sec:discussion} their interpretation and limits.
 
 %% ======================================================================
 \section{Related Work}\label{sec:related}
@@ -237,7 +237,7 @@ where $g_t$ is the decrease in the best fitness divided by the evaluations the s
 To separate the effect of adaptive control from that of simply combining the two algorithms, DOHO runs the published DO for the first half of the evaluation budget and the published HO for the second half. It has no stagnation trigger, local search, tabu memory or bandit.
 
 \subsection{The intervention layer on other optimizers (GA+SI, HO+SI)}
-To test whether the interventions help optimizers other than DO, we wrapped the same layer around the GA and around the published HO, which we call GA+SI and HO+SI (SI for stagnation-triggered interventions). GA+SI is in effect a memetic GA, a GA with a local search applied when it stalls, so it also serves as a memetic baseline. The base optimizer runs while the best subset improves. After $\kappa=2$ stalled iterations, UCB1 with the gain reward chooses among PERTURB, RESTART and one iteration of the base optimizer, with the same tabu memory and acceptance rule as RL-DOHO. GA children are stored as positions $\pm1$ so that PERTURB and RESTART can act on them. One HO iteration costs about $3N$ evaluations against $N$ for a GA generation, so HO+SI stalls, and therefore intervenes, less often than GA+SI within the same budget.
+To test whether the interventions help optimizers other than DO, we wrapped the same layer around the GA and around the published HO, which we call GA+SI and HO+SI (SI for stagnation-triggered interventions). GA+SI is in effect a memetic GA~\cite{moscato1989}, a GA with a local search applied when it stalls, so it also serves as a memetic baseline. The base optimizer runs while the best subset improves. After $\kappa=2$ stalled iterations, UCB1 with the gain reward chooses among PERTURB, RESTART and one iteration of the base optimizer, with the same tabu memory and acceptance rule as RL-DOHO. GA children are stored as positions $\pm1$ so that PERTURB and RESTART can act on them. One HO iteration costs about $3N$ evaluations against $N$ for a GA generation, so HO+SI stalls, and therefore intervenes, less often than GA+SI within the same budget.
 
 
 %% ======================================================================
@@ -282,7 +282,7 @@ Backache~\cite{olson2017pmlb} & 180 & 32 & 2 & 54 (per seed) \\
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{figs/eda.png}
-\caption{Rheumatic and autoimmune disease dataset~\cite{mahdi2025data}: class sizes (left) and percentage of missing values per variable before imputation (right).}
+\caption{Rheumatic and autoimmune disease dataset~\cite{mahdi2025data}: class sizes (left) and percentage of missing values per variable before imputation (right). Classes range from 516 to 2,848 patients, and missingness from none (age, gender) to 43\% (anti-Sm).}
 \label{fig:eda}
 \end{figure*}
 
@@ -329,6 +329,10 @@ Three further extensions were specified at the same time (Supplementary Section~
 \begin{itemize}
 \item \textbf{H11a/b}: at three times the budget, UCB1 with a reward that credits only improvement of the best subset reaches lower fitness than random arm selection, with the default exploration constant (H11a) and with $c=0.2$ (H11b), Holm-corrected over the two.
 \end{itemize}
+Finally, to test whether DO is weak only because of the binary encoding, we fixed:
+\begin{itemize}
+\item \textbf{H12a--d}: at the standard budget on the ten KNN datasets, RL-DOHO against DO with a 10$\times$ (H12a) and 100$\times$ (H12b) larger landing-stage L\'evy step and against DO with the standard stochastic sigmoid transfer function~\cite{kennedy1997,mirjalili2013sv} (H12c); and RL-DOHO against DO when both use the 100$\times$ step (H12d). Holm-corrected over the four.
+\end{itemize}
 All other settings of RL-DOHO ($\varepsilon$, the reward weights, the UCB constant, the number of flipped features, the tabu redraws) were carried over unchanged from the earlier version of this study and were not tuned.
 
 \subsection{Statistical analysis}
@@ -344,7 +348,7 @@ Ablation comparisons report unadjusted sign-test $p$-values, as exploratory resu
 \section{Results}\label{sec:results}
 
 \subsection{Rheumatic and autoimmune disease data}
-Table~\ref{tab:rheum} and Fig.~\ref{fig:rheumbox} summarize the clinical results.
+Table~\ref{tab:rheum} and Fig.~\ref{fig:rheumbox} summarize the clinical results. In the figure, all methods except DO form a tight cluster in fitness and test accuracy and differ mainly in how many variables they keep.
 \begin{itemize}
 \item \textbf{Within the DO--HO family}, RL-DOHO had the lowest mean fitness: 0.1832, against 0.1838 for HO, 0.1857 for DOHO and 0.2280 for DO.
 \item \textbf{Against DO}, RL-DOHO was better in all ten runs on fitness, test accuracy and macro-F1 (Holm $p=0.020$ each).
@@ -384,7 +388,7 @@ All features & 0.1884 $\pm$ 0.0000 & 81.98 & 83.97 $\pm$ 0.00 & 83.50 & 14.0 & 9
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figs/rheum_box.pdf}
-\caption{Rheumatic data: distribution over ten seeds of final fitness, test accuracy and subset size for every method (dots are individual runs; ``All'' is the full feature set).}
+\caption{Rheumatic data: distribution over ten seeds of final fitness, test accuracy and subset size for every method (dots are individual runs; ``All'' is the full feature set). Apart from DO, the methods differ far more in subset size than in fitness or test accuracy.}
 \label{fig:rheumbox}
 \end{figure*}
 
@@ -393,7 +397,7 @@ Fig.~\ref{fig:convrheum} shows why DO fares so poorly on this problem. The publi
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figs/conv_rheum.pdf}
-\caption{Mean best fitness against fitness evaluations used, over ten seeds, on the rheumatic data for the DO--HO family.}
+\caption{Mean best fitness against fitness evaluations used, over ten seeds, on the rheumatic data for the DO--HO family. DO's curve stays almost flat after its first iteration, while HO and RL-DOHO keep improving.}
 \label{fig:convrheum}
 \end{figure}
 
@@ -402,14 +406,14 @@ The selected variables were similar across the wrapper methods (Fig.~\ref{fig:fr
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figs/feat_freq.pdf}
-\caption{Rheumatic data: fraction of the ten runs in which each method selected each variable (blank = never).}
+\caption{Rheumatic data: fraction of the ten runs in which each method selected each variable (blank = never). Most wrappers keep the inflammatory markers and the common autoantibodies, and drop anti-dsDNA and anti-Sm, the two variables with the most missing values.}
 \label{fig:freq}
 \end{figure}
 
 This comparison uses a single train/test split. Section~\ref{sec:splits} repeats it on two further splits.
 
 \subsection{Gene-expression data}
-Table~\ref{tab:genes} and Fig.~\ref{fig:convgenes} give the results on the five gene-expression datasets.
+Table~\ref{tab:genes} and Fig.~\ref{fig:convgenes} give the results on the five gene-expression datasets. In the figure, DO's curve flattens early and ends highest on all five datasets, while HO and RL-DOHO keep improving until the budget runs out.
 \begin{itemize}
 \item \textbf{Against DO}, RL-DOHO reached lower fitness on all five datasets; the per-dataset difference was significant after correction on Colon, ALL/AML and Lung.
 \item \textbf{Against HO}, its mean fitness was lower on Colon, ALL/AML and Glioma and higher on Lung and GSE93272, with no significant per-dataset difference; on ALL/AML HO was ahead in more runs (5 against 4).
@@ -459,7 +463,7 @@ The filter methods behaved as in earlier work. LASSO reached the lowest fitness 
 \item On Glioma, LASSO had the best fitness (0.0085) but the lowest test accuracy (67.3\% against 78.7\% for RL-DOHO). RL-DOHO's macro-F1 was higher in all ten runs (Holm $p=0.020$).
 \item With 15--61 test samples per split, one sample is worth 1.6--6.7 accuracy points, so these test accuracies are coarse.
 \end{itemize}
-Fig.~\ref{fig:size} plots test accuracy against subset size.
+Fig.~\ref{fig:size} plots test accuracy against subset size. Subset sizes span more than two orders of magnitude, from tens of genes to the full set, yet no method is the most accurate on all five datasets, so keeping fewer genes did not systematically cost accuracy.
 
 \begin{figure*}[t]
 \centering
@@ -632,7 +636,7 @@ Worst or tied (\%) & \textbf{2} & 85 & 5 & 16 & -- \\
 \end{tabular}
 \end{table}
 
-\subsection{Hypotheses H1--H11}
+\subsection{Hypotheses H1--H12}
 Table~\ref{tab:hyp} reports the hypotheses fixed in advance.
 \begin{itemize}
 \item \textbf{H1} was supported, and the tabular datasets replicate it (49 against 1).
@@ -646,11 +650,12 @@ Table~\ref{tab:hyp} reports the hypotheses fixed in advance.
 \item \textbf{H9}: every tested tabular finding replicated with an SVM, including the advantage of PERTURB alone (Section~\ref{sec:svm}).
 \item \textbf{H10a} was not supported: the warm-started bandit was level with random selection (Section~\ref{sec:discussion}).
 \item \textbf{H11a/b} were not supported: a reward aimed at the best subset did not make the bandit beat random selection.
+\item \textbf{H12a--d} were all supported: RL-DOHO stayed ahead of DO under every change to DO's step size and encoding (Section~\ref{sec:discussion}).
 \end{itemize}
 
 \begin{table}[t]
 \centering
-\caption{Hypotheses fixed in advance: W/T/L for the first-named method and two-sided sign-test $p$ (H6: Holm-corrected over the two comparisons; H7: Friedman test over the four values of $\kappa$; H8: summary of twelve Holm-corrected comparisons; H9: tabular data with an SVM; H10a and H11: the ten KNN datasets; H11: Holm-corrected over the two).}
+\caption{Hypotheses fixed in advance: W/T/L for the first-named method and two-sided sign-test $p$ (H6: Holm-corrected over the two comparisons; H7: Friedman test over the four values of $\kappa$; H8: summary of twelve Holm-corrected comparisons; H9: tabular data with an SVM; H10a--H12: the ten KNN datasets; H11 and H12: Holm-corrected within each).}
 \label{tab:hyp}
 \footnotesize
 \setlength{\tabcolsep}{1.7pt}
@@ -679,12 +684,17 @@ H9e & RL-DOHO vs.\ PERTURB alone (SVM) & 50 & 8/1/41 & $<$0.001 \\
 H10a & Warm UCB1 vs.\ random, 3$\times$ & 100 & 46/1/53 & 0.547 \\
 H11a & Best-gain UCB1 vs.\ random, 3$\times$ & 100 & 50/2/48 & 0.920 \\
 H11b & Same, $c=0.2$ & 100 & 55/3/42 & 0.446 \\
+\midrule
+H12a & RL-DOHO vs.\ DO, step $\times$10 & 100 & 75/0/25 & $<$0.001 \\
+H12b & RL-DOHO vs.\ DO, step $\times$100 & 100 & 61/0/39 & 0.035 \\
+H12c & RL-DOHO vs.\ DO, sigmoid & 100 & 85/0/15 & $<$0.001 \\
+H12d & Both with step $\times$100 & 100 & 73/7/20 & $<$0.001 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Ablation and controllers}\label{sec:ablation}
-Table~\ref{tab:ablation} and Fig.~\ref{fig:abl} vary one component at a time.
+Table~\ref{tab:ablation} and Fig.~\ref{fig:abl} vary one component at a time. In the figure, the published DO (no intervention) ranks last in every group of runs, the three controllers lie close together on the gene and tabular data, and PERTURB alone ranks first on the clinical and tabular data but not on the gene data.
 \begin{itemize}
 \item \textbf{The interventions:} removing them leaves essentially the published DO (run inside the RL-DOHO loop). That made results worse in 103 of the 110 runs ($p<0.001$), on every data type.
 \item \textbf{The sparse start:} replacing it with the dense start was worse in 46 of 50 gene runs ($p<0.001$), with mean fitness 0.1269 against 0.0786 and about 870 genes against 157.
@@ -730,11 +740,11 @@ UCB1, old reward & 0.1825 & 3/3/4 (1.000) & 0.0686 & 21/3/26 (0.560) & -- & -- &
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figs/ablation.pdf}
-\caption{Mean per-run fitness rank of the controller variants within each group of runs (lower is better). ``No intervention'' is the published DO; it was not run at three times the budget.}
+\caption{Mean per-run fitness rank of the controller variants within each group of runs (lower is better). ``No intervention'' is the published DO; it was not run at three times the budget. Removing the interventions is the only change that is clearly worse everywhere.}
 \label{fig:abl}
 \end{figure*}
 \subsection{What the controller did}
-Table~\ref{tab:arms} and Fig.~\ref{fig:trace} show how the controller was used in the main runs.
+Table~\ref{tab:arms} and Fig.~\ref{fig:trace} show how the controller was used in the main runs. In the figure's rheumatic run, DO never leaves its initial best, while RL-DOHO makes its large improvement after about 90 evaluations; on Colon both improve, but RL-DOHO ends lower.
 \begin{itemize}
 \item \textbf{Clinical runs:} the bandit made 9.4 decisions per run, four of them the initial pull of each arm. Its reward-driven choices favoured PERTURB (35\%) and HO (31\%), the two arms that ever lowered the best fitness.
 \item \textbf{Gene runs:} it made 27.3 decisions per run, and its choices stayed close to uniform. DO exploration steps produced 42\% of the total fitness reduction, PERTURB 26\% and the HO arm 21\%.
@@ -783,7 +793,7 @@ Controller decisions per run & 9.4 & 27.3 \\
 The extension runs show the same picture. The Q-learning controller made 10, 35 and 33 decisions per run on the clinical, gene and tabular data and spread them over all four arms (averaged over runs: DO 33--35\%, PERTURB 27--33\%, RESTART 16--20\%, HO 17--19\%).
 
 \subsection{The intervention layer on GA and HO (H6)}\label{sec:addon}
-Table~\ref{tab:addon} and Fig.~\ref{fig:addonk}(a) compare the GA and HO with and without the intervention layer.
+Table~\ref{tab:addon} and Fig.~\ref{fig:addonk}(a) compare the GA and HO with and without the intervention layer. In panel (a), the changes for HO are mostly below zero (an improvement), while those for the GA scatter around zero.
 \begin{itemize}
 \item \textbf{HO+SI against HO:} lower fitness in 71 runs and higher in 29 (Holm $p<0.001$). The gain came mostly from the tabular data (40 against 8), with a weaker trend on gene data (30 against 16, $p=0.054$) and none on the clinical data (1 against 5). HO+SI had the lower mean fitness on 8 of the 11 datasets, by up to 16\% (Colon, Glioma, Dermatology).
 \item \textbf{GA+SI against the GA:} no difference (45 against 49), on every data type.
@@ -922,30 +932,30 @@ An earlier version of this study used simplified DO and HO update rules, a dense
 %% ======================================================================
 \section{Discussion}\label{sec:discussion}
 
-\subsection{Why RL-DOHO improves on DO}
-With the binary encoding used here, a feature changes only when its coordinate crosses zero. The published DO's landing stage pulls the whole population to within small Lévy steps of the elite in every iteration. On a 14-feature problem this almost always reproduces the elite's subset, which is why DO improved on its initial best in only one clinical run. On gene data, with thousands of coordinates, the heavy tails of the Lévy steps do flip some features, and DO improved in 48 of 50 runs, but slowly. RL-DOHO's interventions supply exactly what DO lacks under this encoding: new subsets near the best one (PERTURB), new subsets elsewhere (RESTART), and HO's greedy, randomized moves. The ablation supports this reading: removing the interventions made results worse in 103 of 110 runs. This result depends on the encoding and on the Lévy scale of the original paper (0.01); a transfer function with more spread, or larger steps, might let DO move more freely.
+\subsection{RL-DOHO supplies the moves that DO lacks}
+With the binary encoding used here, a feature changes only when its coordinate crosses zero. The published DO's landing stage pulls the whole population to within small Lévy steps of the elite in every iteration. On a 14-feature problem this almost always reproduces the elite's subset, which is why DO improved on its initial best in only one clinical run. On gene data, with thousands of coordinates, the heavy tails of the Lévy steps do flip some features, and DO improved in 48 of 50 runs, but slowly. RL-DOHO's interventions supply exactly what DO lacks under this encoding: new subsets near the best one (PERTURB), new subsets elsewhere (RESTART), and HO's greedy, randomized moves. The ablation supports this reading: removing the interventions made results worse in 103 of 110 runs. Because this explanation makes DO weak partly by construction, we tested it (H12). Larger landing steps did help DO: with a 10$\times$ or 100$\times$ step it beat the published DO in 83 and 84 of 100 runs and evaluated far more distinct subsets (193--382 per tabular run with the 100$\times$ step, against 22--26). The standard sigmoid transfer function helped less (60 against 40, $p=0.057$) and, on gene data, selected hundreds to thousands of genes. RL-DOHO nevertheless stayed ahead of every variant: 75 against 25 runs for the 10$\times$ step, 85 against 15 for the sigmoid, and 61 against 39 for the 100$\times$ step (Holm $p=0.035$). The last was level on the tabular data (24 against 26) and decided by the gene data (37 against 13). When both used the 100$\times$ step, the layer still improved DO in 73 runs against 20 ($p<0.001$), on tabular and gene data alike. The published step size is therefore part of why DO is weak, but it is not the reason RL-DOHO beats it, and RL-DOHO itself was unchanged by the larger step (50 against 49). No test-accuracy difference in these comparisons was significant. Supplementary Section~S6 gives the details.
 
-\subsection{What the interventions contribute}
+\subsection{The interventions help optimizers that lack local moves}
 The add-on experiment separates the interventions from DO. Attached to HO, they improved fitness in 71 of 100 decided runs; attached to the GA, they changed nothing. The difference is not that the GA never stalls: GA+SI made 47--48 intervention decisions per gene or tabular run, against 12--13 for HO+SI. It lies in what the base optimizer does after a stall. A GA generation recombines and mutates good subsets directly in the binary space, and within GA+SI's interventions the GA arm itself produced 57\% of the fitness reduction, so the extra moves largely duplicated what the GA already does. An HO iteration costs about $3N$ evaluations and moves continuous positions relative to a dominant agent; it does not search next to the best subset, which is what PERTURB adds at a cost of $N/2$. The interventions therefore help when they supply a kind of move the base optimizer lacks, rather than wrapper search in general.
 
 Among the interventions, PERTURB, a bit-flip local search around the best subset, is the most useful on low-dimensional data. It produced 69\% of the fitness reduction during HO+SI's interventions (42\% in GA+SI), and PERTURB alone beat the full arm set on the tabular data with both classifiers (39 against 8 runs with 5-NN, 41 against 8 with an SVM) and was ahead on the clinical data too, although not significantly (6 against 2). On gene data, where a few bit flips change little among thousands of features, the full arm set was ahead (30 against 19, not significant), and in RL-DOHO's main gene runs DO exploration steps produced more of the improvement than PERTURB. The $\kappa$ sweep points the same way: intervening after one or two stalled iterations was better than waiting three or four. A practical reading is that a stalled population-based search should be followed quickly by a short local search around its best subset; on our tabular datasets (19--44 features) that local search alone was the better choice overall, although not on every dataset (for example Hepatitis with the SVM, 5 against 4), and on gene data it was not. The fitness advantage of PERTURB alone did not show up in test accuracy (19 against 26 runs with 5-NN, 21 against 22 with an SVM), in line with the other comparisons.
 
-\subsection{Why the controller did not help}
+\subsection{Learned move selection does not outperform random choice}
 The controller result now holds for three controllers (UCB1, a stateful Q-learner and random selection), two reward designs, three data types and two budgets, so it is unlikely to be an artefact of a single setting. Two explanations seemed plausible. The arms might be complementary rather than ranked, so that a random choice loses little. Or the decisions might be too few. At the standard budget the bandit made 9 decisions per clinical run, four of them initial pulls, and about 30 per gene or tabular run; the Q-learner, which has six states to fill, had 10 to 35. That leaves little room for a learned preference to pay off within a run. The Q-learner was, if anything, slightly worse than the bandit, which is consistent with it spending about one in six of its few decisions on random exploration. We therefore describe RL-DOHO's controller as an adaptive selector that costs almost nothing and removes the need to fix the move in advance. On our data it delivered no gain over random selection, and the method's benefits come from the interventions and the initialization.
 
 We tested the second explanation directly (H10a). At three times the budget, with about 80--115 decisions per run, a bandit started from the statistics of two earlier runs on the same training data did no better than random selection (46 against 53 runs, $p=0.55$). It was, if anything, slightly behind the cold-started bandit (39 against 61, unadjusted $p=0.035$, Holm $p=0.070$), while costing about 70\% more distinct evaluations for its warm-up runs. The cold-started bandit was again level with random selection (51 against 46).
 
-A diagnostic recorded in the same runs shows why more decisions did not help, and it also rules out the first explanation in its simple form. The moves did differ: under random selection their rewards differed on every dataset (Kruskal--Wallis $p<0.001$), and the bandit's choice frequencies ranked the moves exactly as their mean rewards did (Spearman correlation 1.0 on all ten datasets). The bandit therefore learned what it was rewarded for. The reward, however, did not rank the moves by what matters. DO iterations earned the highest mean reward (0.10--0.13), largely through the population term of the reward, yet improved the best subset in at most 11\% of uses, whereas PERTURB and HO did so in up to 28\% and 22\%. The reward gaps were also small next to UCB1's exploration bonus, so the choices stayed close to uniform (DO 32\%, PERTURB 25\%, HO 22\%, RESTART 20\%). Under these two conditions a learned choice cannot do much better than a random one. We then tested both fixes together (H11, fixed after the H10a diagnostics): a reward that credits only improvement of the best subset, with the default exploration constant and with $c=0.2$. With the new reward the bandit's preferences moved the right way. Its choice frequencies now tracked how often each move improved the best subset (mean Spearman correlation 0.73, and 0.84 with $c=0.2$, against 0.08 with the original reward), and PERTURB became its most used move (28\%, and 36\% with $c=0.2$). Yet neither variant beat random selection (50 against 48 runs, $p=0.92$; 55 against 42, Holm $p=0.45$), and the share of decisions that improved the best subset hardly changed (7.1--7.6\%, against 7.4\% for random choice). The new reward was ahead of the original one in 57 runs and behind in 37 (unadjusted $p=0.050$, Holm $p=0.15$), a trend at most. The reason is the size of the signal. Even the best move improved the best subset in at most 28\% of its uses, and usually far less, so favouring it changes the expected outcome of a decision only slightly over about 100 decisions. The bandit can learn which move is better; on this problem, being better is not worth much. The other pre-specified extensions, a move pool with removal and swap moves and a contextual bandit, are implemented (Supplementary Section~S3) but were not run.
+A diagnostic recorded in the same runs shows why more decisions did not help, and it also rules out the first explanation in its simple form. The moves did differ: under random selection their rewards differed on every dataset (Kruskal--Wallis test~\cite{kruskal1952}, $p<0.001$), and the bandit's choice frequencies ranked the moves exactly as their mean rewards did (Spearman rank correlation~\cite{spearman1904} 1.0 on all ten datasets). The bandit therefore learned what it was rewarded for. The reward, however, did not rank the moves by what matters. DO iterations earned the highest mean reward (0.10--0.13), largely through the population term of the reward, yet improved the best subset in at most 11\% of uses, whereas PERTURB and HO did so in up to 28\% and 22\%. The reward gaps were also small next to UCB1's exploration bonus, so the choices stayed close to uniform (DO 32\%, PERTURB 25\%, HO 22\%, RESTART 20\%). Under these two conditions a learned choice cannot do much better than a random one. We then tested both fixes together (H11, fixed after the H10a diagnostics): a reward that credits only improvement of the best subset, with the default exploration constant and with $c=0.2$. With the new reward the bandit's preferences moved the right way. Its choice frequencies now tracked how often each move improved the best subset (mean Spearman correlation 0.73, and 0.84 with $c=0.2$, against 0.08 with the original reward), and PERTURB became its most used move (28\%, and 36\% with $c=0.2$). Yet neither variant beat random selection (50 against 48 runs, $p=0.92$; 55 against 42, Holm $p=0.45$), and the share of decisions that improved the best subset hardly changed (7.1--7.6\%, against 7.4\% for random choice). The new reward was ahead of the original one in 57 runs and behind in 37 (unadjusted $p=0.050$, Holm $p=0.15$), a trend at most. The reason is the size of the signal. Even the best move improved the best subset in at most 28\% of its uses, and usually far less, so favouring it changes the expected outcome of a decision only slightly over about 100 decisions. The bandit can learn which move is better; on this problem, being better is not worth much. The other pre-specified extensions, a move pool with removal and swap moves and a contextual bandit (LinUCB~\cite{li2010linucb}), are implemented (Supplementary Section~S3) but were not run.
 
-\subsection{RL-DOHO, HO and the GA}
+\subsection{RL-DOHO matches HO and trails the GA on fitness}
 RL-DOHO and HO reached statistically indistinguishable fitness (58 against 49 over 110 runs), although RL-DOHO had the better family rank and was rarely the worst of the four. On the repeated clinical splits HO had the better family rank. The GA reached lower fitness than RL-DOHO more often on every data type (85 against 22 overall). Its uniform crossover recombines good subsets directly in the binary space, and with a mutation rate of $1/D$ it stays close to sparse subsets once it starts there; neither property depends on a continuous-to-binary mapping. On test accuracy the GA and RL-DOHO did not differ (48 against 48).
 
-Why, then, not simply use the GA? On fitness alone, the GA is the better choice on these datasets, and we do not claim otherwise. Three results still matter for practice. First, the GA's fitness advantage did not reach held-out data: no test-accuracy difference survived correction. Second, the GA was more expensive. It evaluated 59--66\% more distinct subsets than RL-DOHO per run (132 against 83 on the clinical splits, 633 against 381 on the tabular data), which is what counts when each evaluation means training a model. Third, the GA does not need the layer, and the add-on experiment shows why. GA+SI is a memetic GA in the usual sense, a GA with a local search triggered when it stalls, and it was no better than the plain GA (45 against 49). The GA's crossover and mutation already supply the local moves the layer adds. The layer pays off on optimizers that lack such moves, such as DO and HO, and that is the paper's main claim. It is not a claim that RL-DOHO is the best feature selector.
+A natural objection is that the GA could simply be used instead. On fitness alone, the GA is the better choice on these datasets, and we do not claim otherwise. Three results still matter for practice. First, the GA's fitness advantage did not reach held-out data: no test-accuracy difference survived correction. Second, the GA was more expensive. It evaluated 59--66\% more distinct subsets than RL-DOHO per run (132 against 83 on the clinical splits, 633 against 381 on the tabular data), which is what counts when each evaluation means training a model. Third, the GA does not need the layer, and the add-on experiment shows why. GA+SI is a memetic GA in the usual sense, a GA with a local search triggered when it stalls, and it was no better than the plain GA (45 against 49). The GA's crossover and mutation already supply the local moves the layer adds. The layer pays off on optimizers that lack such moves, such as DO and HO, and that is the paper's main claim. It is not a claim that RL-DOHO is the best feature selector.
 
-\subsection{Filters, wrappers and optimistic fitness}
+\subsection{Filter fitness on gene data is optimistic}
 The filters' standing depended on the data type. On gene data LASSO reached lower fitness than every wrapper on every dataset, and mRMR did so on ALL/AML and Lung. On the tabular and clinical data, with 14--44 features, the wrappers led and LASSO, mRMR and ReliefF trailed RL-DOHO. Part of the filters' fitness advantage on gene data is optimistic, however. Their subset size was chosen by minimizing the same cross-validated score that is reported as fitness, the selection bias described by Ambroise and McLachlan~\cite{ambroise2002}. Glioma shows the effect most clearly: LASSO had the best fitness and the worst test accuracy. On held-out data the differences shrink: in the pooled tests over all 110 runs no test-accuracy difference survived correction, and LASSO's lead over RL-DOHO on macro-F1 was the only test-score difference that did.
 
-\subsection{Clinical data}
+\subsection{The clinical data do not separate the methods}
 On the rheumatic data all methods except the published DO reached test accuracy within about 1.1 points of each other on the original split and, apart from BGWO, within 0.4 points on each new split, and the best subsets were found by many methods. The dataset is too easy to separate the better search methods, which is also why the intervention layer made no difference to HO or the GA there. The two variables that RL-DOHO, the GA, BPSO and BGWO mostly dropped, anti-dsDNA and anti-Sm, are the two with the most missing values (39\% and 43\%). Their low value in this dataset may therefore reflect missingness and mode imputation rather than clinical irrelevance. Where fitness evaluations are expensive, as with the boosted models used here, RL-DOHO's smaller number of distinct subsets is a practical advantage at equal test accuracy.
 
 \subsection{Limitations}
@@ -953,15 +963,15 @@ Several limitations qualify these results. The clinical findings come from a sin
 
 %% ======================================================================
 \section{Conclusion}
-We presented RL-DOHO, a DO--HO hybrid. It runs the published DO while the search improves and, after two stagnant iterations, applies one of four interventions chosen by a UCB1 bandit, with tabu memory, a gain-based reward and a sparse start for high-dimensional data. Across eleven datasets and ten seeds, with equal evaluation budgets and hypotheses fixed in advance:
+We presented a stagnation-triggered intervention layer for wrapper feature selection and its instantiation, RL-DOHO. RL-DOHO runs the published DO while the best subset improves and, after $\kappa=2$ stalled iterations, lets a UCB1 bandit choose among a bit-flip search, a partial restart, a DO iteration and an HO iteration. Across eleven datasets and ten seeds, with equal evaluation budgets and every hypothesis fixed in advance, the main findings are:
 \begin{itemize}
-\item RL-DOHO reached lower fitness than the published DO, a fixed DO-then-HO hybrid and binary PSO significantly more often than not.
-\item It was level with the published HO, had a slightly better average rank in the DO--HO family and was its worst member in 2 of 110 runs, although HO ranked better on the repeated clinical splits.
-\item A GA reached lower fitness more often, and no test-accuracy difference was significant after correction.
-\item The same intervention layer improved HO but not the GA, whose own generations already supply the local moves the layer adds.
-\item How the intervention was chosen did not matter: UCB1, Q-learning, a warm-started UCB1, a UCB1 rewarded only for improving the best subset and random selection were level. With that reward the bandit learned to favour the right moves, but their success rates were too low for the preference to pay off. Intervening early ($\kappa\le2$) was better than waiting. On the tabular datasets (19--44 features), a bit-flip search around the best subset alone beat the full set of interventions; on gene data, with thousands of features, it did not (the full set was ahead, not significantly).
-\item An SVM in place of 5-NN barely changed the ranking of the methods on the tabular data and reproduced the main comparisons there.
-\item Over three clinical train/test splits, RL-DOHO differed significantly only from DO and the full feature set. On the clinical and tabular data it needed 35--40\% fewer distinct fitness evaluations than HO or the GA.
+\item \textbf{Against DO:} RL-DOHO reached lower fitness in 103 of 110 paired runs (4 losses). Its lead held against DO with 10$\times$ and 100$\times$ larger L\'evy steps (75 against 25 and 61 against 39 runs) and with a sigmoid transfer function (85 against 15). The layer also improved a DO that used the larger step (73 against 20).
+\item \textbf{Against the other baselines:} it beat the fixed DO-then-HO hybrid (81 against 28), binary PSO (70 against 38), ReliefF (84 against 26) and mRMR (68 against 40). It was level with HO (58 against 49), binary GWO (67 against 43) and LASSO (49 against 61). It had the best average rank in the DO--HO family (1.77, against 1.89 for HO) and was the family's worst member in only 2 of 110 runs. The GA reached lower fitness in 85 runs against 22.
+\item \textbf{The layer on other optimizers:} it improved HO in 71 runs against 29 ($p<0.001$; 37 against 8 with an SVM) and left the GA unchanged (45 against 49).
+\item \textbf{The controller:} UCB1 and random choice were level (54 against 51), as were Q-learning and random choice at three times the budget (46 against 56). So were a warm-started UCB1 (46 against 53) and a UCB1 rewarded only for improving the best subset (50 against 48). With that reward, the bandit's choices tracked how often each move improved the best subset (Spearman 0.73--0.84, against 0.08 with the original reward), but no move did so in more than 28\% of its uses.
+\item \textbf{Trigger and moves:} intervening after one or two stalled iterations beat waiting three or four (Friedman $p<0.001$). On the tabular data the bit-flip search alone beat the full set of moves (39 against 8 runs with 5-NN, 41 against 8 with an SVM), but not on gene data (19 against 30).
+\item \textbf{Robustness and cost:} replacing 5-NN with an SVM left the ranking of the methods almost unchanged (Spearman 0.99). Over three clinical train/test splits, RL-DOHO differed significantly only from DO and the full feature set. On the clinical and tabular data it evaluated 35--40\% fewer distinct subsets than HO or the GA (83 against 131 and 132 per clinical run).
+\item \textbf{Held-out data:} no pooled test-accuracy difference survived correction.
 \end{itemize}
 Future work should test the layer on more clinical cohorts with external validation, test learned controllers on move pools whose members differ more in success rate, and examine binary encodings under which the published DO can move more freely.
 
@@ -1070,6 +1080,14 @@ The rheumatic dataset is openly available (CC BY 4.0) from the source cited in~\
 \bibitem{kurgan2001} L. A. Kurgan, K. J. Cios, R. Tadeusiewicz, M. Ogiela, and L. S. Goodenday, ``Knowledge discovery approach to automated cardiac SPECT diagnosis,'' \textit{Artif. Intell. Med.}, vol. 23, no. 2, pp. 149--169, 2001, doi: 10.1016/S0933-3657(01)00082-3.
 
 \bibitem{li2010linucb} L. Li, W. Chu, J. Langford, and R. E. Schapire, ``A contextual-bandit approach to personalized news article recommendation,'' in \textit{Proc. 19th Int. Conf. World Wide Web (WWW)}, 2010, pp. 661--670, doi: 10.1145/1772690.1772758.
+
+\bibitem{moscato1989} P. Moscato, ``On evolution, search, optimization, genetic algorithms and martial arts: Towards memetic algorithms,'' Caltech Concurrent Computation Program, Pasadena, CA, USA, Tech. Rep. C3P 826, 1989.
+
+\bibitem{mirjalili2013sv} S. Mirjalili and A. Lewis, ``S-shaped versus V-shaped transfer functions for binary particle swarm optimization,'' \textit{Swarm Evol. Comput.}, vol. 9, pp. 1--14, 2013, doi: 10.1016/j.swevo.2012.09.002.
+
+\bibitem{kruskal1952} W. H. Kruskal and W. A. Wallis, ``Use of ranks in one-criterion variance analysis,'' \textit{J. Amer. Statist. Assoc.}, vol. 47, no. 260, pp. 583--621, 1952, doi: 10.1080/01621459.1952.10483441.
+
+\bibitem{spearman1904} C. Spearman, ``The proof and measurement of association between two things,'' \textit{Amer. J. Psychol.}, vol. 15, no. 1, pp. 72--101, 1904, doi: 10.2307/1412159.
 
 \end{thebibliography}
 

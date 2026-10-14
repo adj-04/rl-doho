@@ -68,6 +68,7 @@ Raw data files are not stored here (see `.gitignore`). The notebooks download th
 | 10 | `10_v4_svm_tabular.ipynb` | Tabular benchmark repeated with an SVM (H9) |
 | 11 | `11_v5_controller_warm_start.ipynb` | Warm-started controller vs random choice (H10a), with reward diagnostics |
 | 12 | `12_v6_best_gain_reward.ipynb` | Reward credited only for improving the best subset, with c = 1 and c = 0.2 (H11) |
+| 13 | `13_v7_do_encoding_sensitivity.ipynb` | DO with larger Lévy steps or a sigmoid encoding vs RL-DOHO (H12) |
 
 Notebook 11 also contains a 7-move pool (with drop and swap moves) and a LinUCB contextual bandit. They are fixed in advance as H10b–d but have not been run; set `ONLY = None` to run them.
 
@@ -85,7 +86,7 @@ Notebook 11 also contains a 7-move pool (with drop and swap moves) and a LinUCB 
 ## Repository layout
 
 ```
-notebooks/   the 12 notebooks, with outputs
+notebooks/   the 13 notebooks, with outputs
 paper/       main.pdf, supplementary.pdf, LaTeX sources (main.tex, supp.tex, refs.tex), figs/, tables/
 results/     per-run results (pickles and CSVs), one folder per version (v1_paper_bundle ... v5_rl)
 ```

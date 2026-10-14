@@ -180,4 +180,36 @@ The H10a diagnostics showed that the bandit learned its reward, but that the rew
 
 \emph{Diagnostics.} Under random choice, the share of a move's uses that improved the best subset was 0--11\% for DO, 6--22\% for HO, 4--28\% for PERTURB and at most 3\% for RESTART. The original reward ranked the moves almost independently of these rates (mean Spearman correlation 0.08). With the best-gain reward, the bandit's choice frequencies followed them (mean 0.73, and 0.84 with $c=0.2$), and PERTURB became its most used move (28\% and 36\%). The share of decisions that improved the best subset was nevertheless 7.1\% and 7.6\%, against 7.4\% under random choice. The bandit learned the better moves, but the moves' success rates are low and close enough that favouring the best of them changes little over about 100 decisions.
 
+
+\section{DO encoding sensitivity (H12)}
+In the main runs the published DO almost never leaves the elite's subset, because a feature changes only when its coordinate crosses zero and the landing stage moves agents by small L\'evy steps ($s=0.01$). To test whether RL-DOHO's advantage over DO depends on this, we ran four variants at the standard budget (1,020 evaluations) on the ten KNN datasets with ten seeds:
+\begin{itemize}
+\item DO with $s=0.1$ and $s=1$ (10$\times$ and 100$\times$ larger landing steps);
+\item DO with the standard stochastic sigmoid transfer function (a feature is selected with probability $1/(1+e^{-x})$);
+\item RL-DOHO whose DO steps use $s=1$.
+\end{itemize}
+The published DO, RL-DOHO and HO were rerun as references and reproduced the main study exactly (300 of 300 runs identical). With published settings, the variant code reproduces DO and RL-DOHO exactly. The hypotheses and the reading rule were fixed before the runs. The advantage counts as robust to the encoding if H12a--c all favour RL-DOHO at Holm $p<0.05$, and H12d decides whether the layer still helps a DO that moves freely.
+
+\begin{table}[h]
+\centering
+\caption{DO encoding sensitivity: W/T/L for the first-named method on fitness over 100 paired runs (and by data type), two-sided sign-test $p$, Holm-corrected over H12a--d.}
+\label{tab:h12}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+& Comparison & All (100) & Tabular & Gene \\
+\midrule
+H12a & RL-DOHO vs.\ DO, $s=0.1$ & 75/0/25 ($<$0.001) & 44/0/6 & 31/0/19 \\
+H12b & RL-DOHO vs.\ DO, $s=1$ & 61/0/39 (0.035) & 24/0/26 & 37/0/13 \\
+H12c & RL-DOHO vs.\ DO, sigmoid & 85/0/15 ($<$0.001) & 37/0/13 & 48/0/2 \\
+H12d & RL-DOHO vs.\ DO, both $s=1$ & 73/7/20 ($<$0.001) & 33/7/10 & 40/0/10 \\
+\midrule
+ & RL-DOHO vs.\ published DO & 93/3/4 & 49/0/1 & 44/3/3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{Result.} All four hypotheses were supported, so by the rule fixed in advance the advantage over DO is robust to the encoding, and the layer still helps a DO that moves freely (Table~\ref{tab:h12}). The larger steps did help DO. Against the published DO, $s=0.1$ won 83 runs and lost 11, and $s=1$ won 84 and lost 16. With $s=1$, DO evaluated 193--382 distinct subsets per tabular run, against 22--26, and was level with HO (43 against 57, $p=0.19$). The sigmoid transfer helped less (60 against 40, $p=0.057$), and on gene data it selected 757--2,601 genes on average. The closest comparison, H12b, was level on the tabular data and decided by the gene data. RL-DOHO itself was not changed by the larger step (50 against 49). In test accuracy, none of the H12 comparisons was significant.
+
 \end{document}
