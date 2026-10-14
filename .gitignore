@@ -6,3 +6,4 @@ __pycache__/
 **/cache_*.pkl
 **/fitness_cache_*.pkl
 **/test_cache_*.pkl
+adj-04/
