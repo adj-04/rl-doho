@@ -1,0 +1,291 @@
+\begin{thebibliography}{54}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\providecommand{\eprint}[2][]{\url{#2}}
+ \bibcommenthead
+
+\bibitem[{Alon et~al(1999)Alon, Barkai, Notterman, Gish, Ybarra, Mack, and
+  Levine}]{alon1999}
+Alon U, Barkai N, Notterman DA, et~al (1999) Broad patterns of gene expression
+  revealed by clustering analysis of tumor and normal colon tissues probed by
+  oligonucleotide arrays. Proc Natl Acad Sci USA 96(12):6745--6750.
+  \doi{10.1073/pnas.96.12.6745}
+
+\bibitem[{Alzakari et~al(2024)Alzakari, Maashi, Alahmari, Arasi, Alharbi, and
+  Sayed}]{alzakari2024}
+Alzakari SA, Maashi M, Alahmari S, et~al (2024) Towards laryngeal cancer
+  diagnosis using {Dandelion Optimizer} algorithm with ensemble learning on
+  biomedical throat region images. Sci Rep 14:19713.
+  \doi{10.1038/s41598-024-70525-0}
+
+\bibitem[{Ambroise and McLachlan(2002)}]{ambroise2002}
+Ambroise C, McLachlan GJ (2002) Selection bias in gene extraction on the basis
+  of microarray gene-expression data. Proc Natl Acad Sci USA 99(10):6562--6566.
+  \doi{10.1073/pnas.102102699}
+
+\bibitem[{Amiri et~al(2024)Amiri, Mehrabi~Hashjin, Montazeri, Mirjalili, and
+  Khodadadi}]{amiri2024ho}
+Amiri MH, Mehrabi~Hashjin N, Montazeri M, et~al (2024) Hippopotamus
+  optimization algorithm: a novel nature-inspired optimization algorithm. Sci
+  Rep 14:5032. \doi{10.1038/s41598-024-54910-3}
+
+\bibitem[{Ardiyansa et~al(2025)Ardiyansa, Muslikh, and
+  Alghofari}]{ardiyansa2025}
+Ardiyansa SA, Muslikh M, Alghofari AR (2025) Binary hippopotamus algorithm with
+  random forest for optimizing feature selection problem. Numer Algebra Control
+  Optim 15(4):1176--1191. \doi{10.3934/naco.2025009}
+
+\bibitem[{Auer et~al(2002)Auer, Cesa-Bianchi, and Fischer}]{auer2002}
+Auer P, Cesa-Bianchi N, Fischer P (2002) Finite-time analysis of the multiarmed
+  bandit problem. Mach Learn 47(2--3):235--256. \doi{10.1023/A:1013689704352}
+
+\bibitem[{Bhattacharjee et~al(2001)}]{bhattacharjee2001}
+Bhattacharjee A, et~al (2001) Classification of human lung carcinomas by {mRNA}
+  expression profiling reveals distinct adenocarcinoma subclasses. Proc Natl
+  Acad Sci USA 98(24):13790--13795. \doi{10.1073/pnas.191502998}
+
+\bibitem[{Chawla et~al(2002)Chawla, Bowyer, Hall, and Kegelmeyer}]{chawla2002}
+Chawla NV, Bowyer KW, Hall LO, et~al (2002) {SMOTE}: synthetic minority
+  over-sampling technique. J Artif Intell Res 16:321--357.
+  \doi{10.1613/jair.953}
+
+\bibitem[{Chen and Guestrin(2016)}]{chen2016xgb}
+Chen T, Guestrin C (2016) {XGBoost}: a scalable tree boosting system. In:
+  Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge
+  Discovery and Data Mining, pp 785--794, \doi{10.1145/2939672.2939785}
+
+\bibitem[{Dem{\v{s}}ar(2006)}]{demsar2006}
+Dem{\v{s}}ar J (2006) Statistical comparisons of classifiers over multiple data
+  sets. J Mach Learn Res 7:1--30
+
+\bibitem[{Emary et~al(2016)Emary, Zawbaa, and Hassanien}]{emary2016bgwo}
+Emary E, Zawbaa HM, Hassanien AE (2016) Binary grey wolf optimization
+  approaches for feature selection. Neurocomputing 172:371--381.
+  \doi{10.1016/j.neucom.2015.06.083}
+
+\bibitem[{Fialho et~al(2010)Fialho, Da~Costa, Schoenauer, and
+  Sebag}]{fialho2010}
+Fialho {\'A}, Da~Costa L, Schoenauer M, et~al (2010) Analyzing bandit-based
+  adaptive operator selection mechanisms. Ann Math Artif Intell
+  60(1--2):25--64. \doi{10.1007/s10472-010-9213-y}
+
+\bibitem[{Friedman(1937)}]{friedman1937}
+Friedman M (1937) The use of ranks to avoid the assumption of normality
+  implicit in the analysis of variance. J Am Stat Assoc 32(200):675--701.
+  \doi{10.1080/01621459.1937.10503522}
+
+\bibitem[{Golub et~al(1999)}]{golub1999}
+Golub TR, et~al (1999) Molecular classification of cancer: class discovery and
+  class prediction by gene expression monitoring. Science 286(5439):531--537.
+  \doi{10.1126/science.286.5439.531}
+
+\bibitem[{G{\"u}venir et~al(1998)G{\"u}venir, Demir{\"o}z, and
+  {\.I}lter}]{guvenir1998}
+G{\"u}venir HA, Demir{\"o}z G, {\.I}lter N (1998) Learning differential
+  diagnosis of erythemato-squamous diseases using voting feature intervals.
+  Artif Intell Med 13(3):147--165. \doi{10.1016/S0933-3657(98)00028-1}
+
+\bibitem[{Holm(1979)}]{holm1979}
+Holm S (1979) A simple sequentially rejective multiple test procedure. Scand J
+  Stat 6(2):65--70
+
+\bibitem[{Hu and Yu(2023)}]{hu2023rlgwo}
+Hu Z, Yu X (2023) Reinforcement learning-based comprehensive learning grey wolf
+  optimizer for feature selection. Appl Soft Comput 149:110959.
+  \doi{10.1016/j.asoc.2023.110959}
+
+\bibitem[{Karaday{\i}~Ata{\c{s}}(2025)}]{karadayi2025}
+Karaday{\i}~Ata{\c{s}} P (2025) A novel clustered-based binary grey wolf
+  optimizer to solve the feature selection problem for uncovering the genetic
+  links between non-{Hodgkin} lymphomas and rheumatologic diseases. Health Inf
+  Sci Syst 13:34. \doi{10.1007/s13755-025-00350-w}
+
+\bibitem[{Karafotias et~al(2015)Karafotias, Hoogendoorn, and
+  Eiben}]{karafotias2015}
+Karafotias G, Hoogendoorn M, Eiben AE (2015) Parameter control in evolutionary
+  algorithms: trends and challenges. IEEE Trans Evol Comput 19(2):167--187.
+  \doi{10.1109/TEVC.2014.2308294}
+
+\bibitem[{Karimi-Mamaghan et~al(2023)Karimi-Mamaghan, Mohammadi, Pasdeloup, and
+  Meyer}]{karimi2023}
+Karimi-Mamaghan M, Mohammadi M, Pasdeloup B, et~al (2023) Learning to select
+  operators in meta-heuristics: an integration of {Q}-learning into the
+  iterated greedy algorithm for the permutation flowshop scheduling problem.
+  Eur J Oper Res 304(3):1296--1330. \doi{10.1016/j.ejor.2022.03.054}
+
+\bibitem[{Kennedy and Eberhart(1997)}]{kennedy1997}
+Kennedy J, Eberhart RC (1997) A discrete binary version of the particle swarm
+  algorithm. In: Proceedings of the IEEE International Conference on Systems,
+  Man, and Cybernetics, pp 4104--4108, \doi{10.1109/ICSMC.1997.637339}
+
+\bibitem[{Kiziloluk et~al(2024)Kiziloluk, Yildirim, Bingol, and
+  Alatas}]{kiziloluk2024}
+Kiziloluk S, Yildirim M, Bingol H, et~al (2024) Multi-feature fusion and
+  dandelion optimizer based model for automatically diagnosing the
+  gastrointestinal diseases. PeerJ Comput Sci 10:e1919.
+  \doi{10.7717/peerj-cs.1919}
+
+\bibitem[{Kohavi and John(1997)}]{kohavi1997}
+Kohavi R, John GH (1997) Wrappers for feature subset selection. Artif Intell
+  97(1--2):273--324. \doi{10.1016/S0004-3702(97)00043-X}
+
+\bibitem[{Kononenko(1994)}]{kononenko1994}
+Kononenko I (1994) Estimating attributes: analysis and extensions of {RELIEF}.
+  In: Machine Learning: ECML-94, Lecture Notes in Computer Science, vol 784.
+  Springer, Berlin, Heidelberg, pp 171--182, \doi{10.1007/3-540-57868-4_57}
+
+\bibitem[{Kruskal and Wallis(1952)}]{kruskal1952}
+Kruskal WH, Wallis WA (1952) Use of ranks in one-criterion variance analysis. J
+  Am Stat Assoc 47(260):583--621. \doi{10.1080/01621459.1952.10483441}
+
+\bibitem[{Kurgan et~al(2001)Kurgan, Cios, Tadeusiewicz, Ogiela, and
+  Goodenday}]{kurgan2001}
+Kurgan LA, Cios KJ, Tadeusiewicz R, et~al (2001) Knowledge discovery approach
+  to automated cardiac {SPECT} diagnosis. Artif Intell Med 23(2):149--169.
+  \doi{10.1016/S0933-3657(01)00082-3}
+
+\bibitem[{Li et~al(2017)Li, Cheng, Wang, Morstatter, Trevino, Tang, and
+  Liu}]{li2017fs}
+Li J, Cheng K, Wang S, et~al (2017) Feature selection: a data perspective. ACM
+  Comput Surv 50(6):94. \doi{10.1145/3136625}
+
+\bibitem[{Li et~al(2010)Li, Chu, Langford, and Schapire}]{li2010linucb}
+Li L, Chu W, Langford J, et~al (2010) A contextual-bandit approach to
+  personalized news article recommendation. In: Proceedings of the 19th
+  International Conference on World Wide Web, pp 661--670,
+  \doi{10.1145/1772690.1772758}
+
+\bibitem[{Mafarja and Mirjalili(2017)}]{mafarja2017}
+Mafarja MM, Mirjalili S (2017) Hybrid whale optimization algorithm with
+  simulated annealing for feature selection. Neurocomputing 260:302--312.
+  \doi{10.1016/j.neucom.2017.04.053}
+
+\bibitem[{Mahdi et~al(2025{\natexlab{a}})Mahdi, Jahani, and
+  Abd}]{mahdi2025data}
+Mahdi MF, Jahani A, Abd DH (2025{\natexlab{a}}) Diagnosis of rheumatic and
+  autoimmune diseases dataset. Data Brief 60:111623.
+  \doi{10.1016/j.dib.2025.111623}
+
+\bibitem[{Mahdi et~al(2025{\natexlab{b}})Mahdi, Jahani, and
+  Abd}]{mahdi2025fuzzy}
+Mahdi MF, Jahani A, Abd DH (2025{\natexlab{b}}) Fuzzy evaluation and
+  explainable machine learning for diagnosis of rheumatic and autoimmune
+  diseases. PeerJ Comput Sci 11:e3096. \doi{10.7717/peerj-cs.3096}
+
+\bibitem[{Mehrabi~Hashjin et~al(2025)Mehrabi~Hashjin, Amiri, Beheshti, and
+  Khanian~Najafabadi}]{hashjin2025q2ho}
+Mehrabi~Hashjin N, Amiri MH, Beheshti A, et~al (2025) {Q2HO-MFTV}: a binary
+  hippopotamus optimization algorithm for feature selection with a brief review
+  of binary optimization. Knowl-Based Syst 327:114119.
+  \doi{10.1016/j.knosys.2025.114119}
+
+\bibitem[{Mirjalili and Lewis(2013)}]{mirjalili2013sv}
+Mirjalili S, Lewis A (2013) S-shaped versus {V}-shaped transfer functions for
+  binary particle swarm optimization. Swarm Evol Comput 9:1--14.
+  \doi{10.1016/j.swevo.2012.09.002}
+
+\bibitem[{Mirjalili et~al(2014)Mirjalili, Mirjalili, and
+  Lewis}]{mirjalili2014gwo}
+Mirjalili S, Mirjalili SM, Lewis A (2014) Grey wolf optimizer. Adv Eng Softw
+  69:46--61. \doi{10.1016/j.advengsoft.2013.12.007}
+
+\bibitem[{Moscato(1989)}]{moscato1989}
+Moscato P (1989) On evolution, search, optimization, genetic algorithms and
+  martial arts: towards memetic algorithms. Tech. Rep. C3P Report 826, Caltech
+  Concurrent Computation Program, Pasadena, CA
+
+\bibitem[{Nemenyi(1963)}]{nemenyi1963}
+Nemenyi PB (1963) Distribution-free multiple comparisons. PhD thesis, Princeton
+  University, Princeton, NJ
+
+\bibitem[{Nutt et~al(2003)}]{nutt2003}
+Nutt CL, et~al (2003) Gene expression-based classification of malignant gliomas
+  correlates better with survival than histological classification. Cancer Res
+  63(7):1602--1607
+
+\bibitem[{Olson et~al(2017)Olson, La~Cava, Orzechowski, Urbanowicz, and
+  Moore}]{olson2017pmlb}
+Olson RS, La~Cava W, Orzechowski P, et~al (2017) {PMLB}: a large benchmark
+  suite for machine learning evaluation and comparison. BioData Min 10:36.
+  \doi{10.1186/s13040-017-0154-4}
+
+\bibitem[{Pei et~al(2025)Pei, Sun, and Tong}]{pei2025}
+Pei S, Sun G, Tong L (2025) An improved hippopotamus optimization algorithm
+  based on adaptive development and solution diversity enhancement. PeerJ
+  Comput Sci 11:e2901. \doi{10.7717/peerj-cs.2901}
+
+\bibitem[{Peng et~al(2005)Peng, Long, and Ding}]{peng2005}
+Peng H, Long F, Ding C (2005) Feature selection based on mutual information:
+  criteria of max-dependency, max-relevance, and min-redundancy. IEEE Trans
+  Pattern Anal Mach Intell 27(8):1226--1238. \doi{10.1109/TPAMI.2005.159}
+
+\bibitem[{Ramadhani et~al(2025)Ramadhani, Handayani, Ng, Dzulkifly, Ariffin,
+  Budiman, and Wang}]{ramadhani2025}
+Ramadhani S, Handayani L, Ng TF, et~al (2025) Feature selection optimisation
+  for cancer classification based on evolutionary algorithms: an extensive
+  review. Comput Model Eng Sci 143(3):2711--2765.
+  \doi{10.32604/cmes.2025.062709}
+
+\bibitem[{Spearman(1904)}]{spearman1904}
+Spearman C (1904) The proof and measurement of association between two things.
+  Am J Psychol 15(1):72--101. \doi{10.2307/1412159}
+
+\bibitem[{Street et~al(1993)Street, Wolberg, and Mangasarian}]{street1993}
+Street WN, Wolberg WH, Mangasarian OL (1993) Nuclear feature extraction for
+  breast tumor diagnosis. In: Biomedical Image Processing and Biomedical
+  Visualization, pp 861--870, \doi{10.1117/12.148698}
+
+\bibitem[{Sutton and Barto(2018)}]{sutton2018}
+Sutton RS, Barto AG (2018) Reinforcement Learning: An Introduction, 2nd edn.
+  MIT Press, Cambridge, MA
+
+\bibitem[{Tang et~al(2024)Tang, Cao, Chen, Chen, and Yue}]{tang2024psodo}
+Tang W, Cao L, Chen Y, et~al (2024) Solving engineering optimization problems
+  based on multi-strategy particle swarm optimization hybrid dandelion
+  optimization algorithm. Biomimetics 9(5):298.
+  \doi{10.3390/biomimetics9050298}
+
+\bibitem[{Tasaki et~al(2018)}]{tasaki2018}
+Tasaki S, et~al (2018) Multi-omics monitoring of drug response in rheumatoid
+  arthritis in pursuit of molecular remission. Nat Commun 9:2755.
+  \doi{10.1038/s41467-018-05044-4}
+
+\bibitem[{Tibshirani(1996)}]{tibshirani1996}
+Tibshirani R (1996) Regression shrinkage and selection via the lasso. J R Stat
+  Soc Ser B 58(1):267--288. \doi{10.1111/j.2517-6161.1996.tb02080.x}
+
+\bibitem[{Watkins and Dayan(1992)}]{watkins1992}
+Watkins CJCH, Dayan P (1992) {Q}-learning. Mach Learn 8(3--4):279--292.
+  \doi{10.1007/BF00992698}
+
+\bibitem[{Wilcoxon(1945)}]{wilcoxon1945}
+Wilcoxon F (1945) Individual comparisons by ranking methods. Biometrics Bull
+  1(6):80--83. \doi{10.2307/3001968}
+
+\bibitem[{Wolpert and Macready(1997)}]{wolpert1997}
+Wolpert DH, Macready WG (1997) No free lunch theorems for optimization. IEEE
+  Trans Evol Comput 1(1):67--82. \doi{10.1109/4235.585893}
+
+\bibitem[{Xue et~al(2016)Xue, Zhang, Browne, and Yao}]{xue2016}
+Xue B, Zhang M, Browne WN, et~al (2016) A survey on evolutionary computation
+  approaches to feature selection. IEEE Trans Evol Comput 20(4):606--626.
+  \doi{10.1109/TEVC.2015.2504420}
+
+\bibitem[{Yuan et~al(2025)Yuan, Yao, Zhang, Chen, and Li}]{yuan2025msho}
+Yuan X, Yao L, Zhang T, et~al (2025) An effective method for solving feature
+  selection problems based on multi-strategy {Hippo} optimization algorithm. J
+  Comput Des Eng 12(8):193--251. \doi{10.1093/jcde/qwaf073}
+
+\bibitem[{Zhao et~al(2022)Zhao, Zhang, Ma, and Chen}]{zhao2022do}
+Zhao S, Zhang T, Ma S, et~al (2022) Dandelion {Optimizer}: a nature-inspired
+  metaheuristic algorithm for engineering applications. Eng Appl Artif Intell
+  114:105075. \doi{10.1016/j.engappai.2022.105075}
+
+\bibitem[{Zhao et~al(2026)Zhao, Song, Zhang, and He}]{zhao2026review}
+Zhao S, Song J, Zhang T, et~al (2026) Dandelion {Optimizer} ({DO}): a review,
+  theory, variants, and applications. Arch Comput Methods Eng 33(2):2553--2577.
+  \doi{10.1007/s11831-025-10385-7}
+
+\end{thebibliography}
