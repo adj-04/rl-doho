@@ -7,3 +7,4 @@ __pycache__/
 **/fitness_cache_*.pkl
 **/test_cache_*.pkl
 adj-04/
+.Rhistory
